@@ -41,6 +41,17 @@ public class Inventory {
 		return scrapable;
 	}
 	
+	public Set<String> createScrapFromSameItem() {
+		Set<String> scrapable = new HashSet<String>();
+		Hashtable<String, Integer> duplicates = getDuplicatesHash();
+		for(String key : duplicates.keySet()) {
+			if(duplicates.get(key) == 3) {
+				scrapable.add(key);
+			}
+		}
+		return scrapable;
+	}
+	
 	public Hashtable<String, Integer> getDuplicatesHash(String itemClass) {
 		Hashtable<String, Integer> duplicateItemsCount = new Hashtable<String, Integer>();
 		ArrayList<String> items = inventory.get(itemClass);

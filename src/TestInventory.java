@@ -1,7 +1,5 @@
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
@@ -36,7 +34,7 @@ public class TestInventory {
 	}
 	
 	@Test
-	public void scrapFromSameItem() {
+	public void scrapFromSameItemByClass() {
 		Set<String> scrapable = inventory.createScrapFromSameItem("heavy");
 		assertEquals("Scrap from gloves", true, scrapable.contains("Gloves of Running Urgently"));
 	}
@@ -46,5 +44,11 @@ public class TestInventory {
 		Hashtable<String, Integer> duplicates = inventory.getDuplicatesHash();
 		int count = duplicates.get("Gloves of Running Urgently");
 		assertEquals("Heavy wep duplicate", 3, count);
+	}
+	
+	@Test
+	public void scrapFromSameItemFromAllClasses() {
+		Set<String> scrapable = inventory.createScrapFromSameItem();
+		assertEquals("Scrap from gloves", true, scrapable.contains("Gloves of Running Urgently"));
 	}
 }
