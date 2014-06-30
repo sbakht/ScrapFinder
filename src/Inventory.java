@@ -45,7 +45,7 @@ public class Inventory {
 		Set<String> scrapable = new HashSet<String>();
 		Hashtable<String, Integer> duplicates = getDuplicatesHash();
 		for(String key : duplicates.keySet()) {
-			if(duplicates.get(key) == 3) {
+			if(duplicates.get(key) >= 3) {
 				scrapable.add(key);
 			}
 		}
@@ -84,28 +84,31 @@ public class Inventory {
 	public Hashtable<String, Integer> getDuplicatesHash() {
 		Hashtable<String, Integer> duplicateItemsCount = new Hashtable<String, Integer>();
 		for(String invKey : inventory.keySet()) {
-			ArrayList<String> items = inventory.get(invKey);
-			for(String item : items) {
-				if(duplicateItemsCount.get(item) != null) {
-					duplicateItemsCount.put(item, duplicateItemsCount.get(item) + 1);
-				}else{
-					duplicateItemsCount.put(item, 1);
+			System.out.println(invKey);
+			if(!invKey.equals("none") && !invKey.equals("all")) {
+				ArrayList<String> items = inventory.get(invKey);
+				for(String item : items) {
+					if(duplicateItemsCount.get(item) != null) {
+						duplicateItemsCount.put(item, duplicateItemsCount.get(item) + 1);
+					}else{
+						duplicateItemsCount.put(item, 1);
+					}
 				}
-			}
-			
-			ArrayList<String> keysToRemove = new ArrayList<String>();
-			for(String key : duplicateItemsCount.keySet()) {
-				if(duplicateItemsCount.get(key) == 1) {
-					keysToRemove.add(key);
+				
+				ArrayList<String> keysToRemove = new ArrayList<String>();
+				for(String key : duplicateItemsCount.keySet()) {
+					if(duplicateItemsCount.get(key) == 1) {
+						keysToRemove.add(key);
+					}
 				}
-			}
-			
-			for(String key : keysToRemove) {
-				duplicateItemsCount.remove(key);
-			}
-			
-			for(String key : duplicateItemsCount.keySet()) {
-				System.out.println(key + ' ' + duplicateItemsCount.get(key));
+				
+				for(String key : keysToRemove) {
+					duplicateItemsCount.remove(key);
+				}
+				
+				for(String key : duplicateItemsCount.keySet()) {
+					System.out.println(key + ' ' + duplicateItemsCount.get(key));
+				}
 			}
 		}
 		return duplicateItemsCount;
