@@ -31,6 +31,7 @@ public class TestInventory {
 		Hashtable<String, Integer> duplicates = inventory.getDuplicatesHash("heavy");
 		int count = duplicates.get("Gloves of Running Urgently");
 		assertEquals("Heavy wep duplicate", 3, count);
+		assertEquals("Heavy wep duplicate", null, duplicates.get("Vintage Natascha"));
 	}
 	
 	@Test

@@ -56,24 +56,11 @@ public class Inventory {
 		Hashtable<String, Integer> duplicateItemsCount = new Hashtable<String, Integer>();
 		ArrayList<String> items = inventory.get(itemClass);
 		for(String item : items) {
-			if(duplicateItemsCount.get(item) != null) {
-				duplicateItemsCount.put(item, duplicateItemsCount.get(item) + 1);
-			}else{
-				duplicateItemsCount.put(item, 1);
+			if(this.numOfItem(itemClass, item) > 1) {
+				duplicateItemsCount.put(item, this.numOfItem(itemClass, item));
 			}
 		}
-		
-		ArrayList<String> keysToRemove = new ArrayList<String>();
-		for(String key : duplicateItemsCount.keySet()) {
-			if(duplicateItemsCount.get(key) == 1) {
-				keysToRemove.add(key);
-			}
-		}
-		
-		for(String key : keysToRemove) {
-			duplicateItemsCount.remove(key);
-		}
-		
+	
 //		for(String key : duplicateItemsCount.keySet()) {
 //			System.out.println(key + ' ' + duplicateItemsCount.get(key));
 //		}
@@ -84,26 +71,12 @@ public class Inventory {
 	public Hashtable<String, Integer> getDuplicatesHash() {
 		Hashtable<String, Integer> duplicateItemsCount = new Hashtable<String, Integer>();
 		for(String invKey : inventory.keySet()) {
-			System.out.println(invKey);
 			if(!invKey.equals("none") && !invKey.equals("all")) {
 				ArrayList<String> items = inventory.get(invKey);
 				for(String item : items) {
-					if(duplicateItemsCount.get(item) != null) {
-						duplicateItemsCount.put(item, duplicateItemsCount.get(item) + 1);
-					}else{
-						duplicateItemsCount.put(item, 1);
+					if(this.numOfItem(item) > 1) {
+						duplicateItemsCount.put(item, this.numOfItem(item));
 					}
-				}
-				
-				ArrayList<String> keysToRemove = new ArrayList<String>();
-				for(String key : duplicateItemsCount.keySet()) {
-					if(duplicateItemsCount.get(key) == 1) {
-						keysToRemove.add(key);
-					}
-				}
-				
-				for(String key : keysToRemove) {
-					duplicateItemsCount.remove(key);
 				}
 				
 				for(String key : duplicateItemsCount.keySet()) {
