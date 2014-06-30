@@ -4,6 +4,8 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,9 +21,10 @@ public class SteamUser {
 	
 	public Inventory getInventory() {
 		URL url;
-		Hashtable<String, String> items = new Hashtable<String, String>();
+		Hashtable<String, ArrayList<String>> inventory = new Hashtable<String, ArrayList<String>>();
 		String itemClass = null;
 		String item = null;
+		ArrayList<String> itemsForClass = new ArrayList<String>();
 		
 		try {
 			// get URL content
@@ -49,7 +52,6 @@ public class SteamUser {
 				Matcher multiCharClass = Pattern.compile("ubc_(.*)\\subc_").matcher(inputLine);
 				//temporarily ignore items used by multiple classes
 				if(charClass.find() && !multiCharClass.find()) {
-//					System.out.println(charClass.group(1));
 					itemClass = charClass.group(1);
 				}
 				
@@ -57,25 +59,25 @@ public class SteamUser {
 				if(m.find()) {
 					Matcher alt = Pattern.compile("alt=\"(.*)\"").matcher(inputLine);
 					if(alt.find() && !alt.group(1).contains("jewel")) {
-//						System.out.println(alt.group(1));
-//						items.add(alt.group(1));
 						item = alt.group(1);
-						items.put(itemClass, item);
-						System.out.println(itemClass);
-						System.out.println(item);
+						if(inventory.get(itemClass) != null) {
+							itemsForClass = inventory.get(itemClass);
+						}else{
+							itemsForClass = new ArrayList<String>();
+						}
+						itemsForClass.add(item);
+						inventory.put(itemClass, itemsForClass);
 					}
 				}
 			}
- 
- 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		Inventory inventory = new Inventory(items);
-		return inventory;
+		Inventory inv = new Inventory(inventory);
+		return inv;
 	}
 	
 }
