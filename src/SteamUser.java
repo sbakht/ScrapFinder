@@ -38,7 +38,7 @@ public class SteamUser {
 				Matcher m = p.matcher(inputLine);
 				if(m.find()) {
 					Matcher alt = Pattern.compile("alt=\"(.*)\"").matcher(inputLine);
-					if(alt.find()) {
+					if(alt.find() && !alt.group(1).contains("jewel")) {
 						System.out.println(alt.group(1));
 					}
 				}
