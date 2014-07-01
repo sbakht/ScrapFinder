@@ -52,4 +52,10 @@ public class TestInventory {
 		Set<String> scrapable = inventory.createScrapFromSameItem();
 		assertEquals("Scrap from gloves", true, scrapable.contains("Gloves of Running Urgently"));
 	}
+	
+	@Test
+	public void scrapFromSameClassFromAllClasses() {
+		Hashtable<String, String> scrapable = inventory.createScrapFromSameClass();
+		assertEquals("Scrap from gloves", false, scrapable.contains("Gloves of Running Urgently"));
+	}
 }

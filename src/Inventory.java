@@ -34,7 +34,7 @@ public class Inventory {
 		Set<String> scrapable = new HashSet<String>();
 		Hashtable<String, Integer> duplicates = getDuplicatesHash(itemClass);
 		for(String key : duplicates.keySet()) {
-			if(duplicates.get(key) == 3) {
+			if(duplicates.get(key) >= 3) {
 				scrapable.add(key);
 			}
 		}
@@ -46,45 +46,102 @@ public class Inventory {
 		Hashtable<String, Integer> duplicates = getDuplicatesHash();
 		for(String key : duplicates.keySet()) {
 			if(duplicates.get(key) >= 3) {
+				duplicates.put(key, duplicates.get(key) - 2);
+				System.out.println("Create scrap from " + key);
 				scrapable.add(key);
 			}
 		}
+		
+		return scrapable;
+	}
+	
+	public Hashtable<String, String> createScrapFromSameClass(String itemClass) {
+		Hashtable<String, String> scrapable = new Hashtable<String, String>();
+		Hashtable<String, Integer> duplicates = getDuplicatesHash(itemClass);
+		int i = 0;
+		String ingredient1 = "";
+		String ingredient2 = "";
+		
+		for(String key : duplicates.keySet()) {
+			if(i % 2 == 0) {
+				ingredient1 = key;
+			}else{
+				ingredient2 = key;
+				scrapable.put(ingredient1, ingredient2);
+			}
+			i++;
+		}
+		
+		for(String key : scrapable.keySet()) {
+			System.out.println(key + " and " + scrapable.get(key));
+		}
+		
+		return scrapable;
+	}
+	
+	public Hashtable<String, String> createScrapFromSameClass() {
+		Hashtable<String, String> scrapable = new Hashtable<String, String>();
+		for(String invKey : inventory.keySet()) {
+			if(!invKey.equals("none") && !invKey.equals("all")) {
+				Hashtable<String, Integer> duplicates = getDuplicatesHash(invKey);
+				int i = 0;
+				String ingredient1 = "";
+				String ingredient2 = "";
+				
+				for(String key : duplicates.keySet()) {
+					if(i % 2 == 0) {
+						ingredient1 = key;
+					}else{
+						ingredient2 = key;
+						scrapable.put(ingredient1, ingredient2);
+					}
+					i++;
+				}
+				
+			}
+		}
+		
+		for(String key : scrapable.keySet()) {
+			System.out.println(key + " and " + scrapable.get(key));
+		}
+		
 		return scrapable;
 	}
 	
 	public Hashtable<String, Integer> getDuplicatesHash(String itemClass) {
-		Hashtable<String, Integer> duplicateItemsCount = new Hashtable<String, Integer>();
+		Hashtable<String, Integer> duplicates = new Hashtable<String, Integer>();
 		ArrayList<String> items = inventory.get(itemClass);
 		for(String item : items) {
 			if(this.numOfItem(itemClass, item) > 1) {
-				duplicateItemsCount.put(item, this.numOfItem(itemClass, item));
+				duplicates.put(item, this.numOfItem(itemClass, item));
 			}
 		}
 	
-//		for(String key : duplicateItemsCount.keySet()) {
-//			System.out.println(key + ' ' + duplicateItemsCount.get(key));
+//		for(String key : duplicates.keySet()) {
+//			System.out.println(key + ' ' + duplicates.get(key));
 //		}
 		
-		return duplicateItemsCount;
+		return duplicates;
 	}
 	
 	public Hashtable<String, Integer> getDuplicatesHash() {
-		Hashtable<String, Integer> duplicateItemsCount = new Hashtable<String, Integer>();
+		Hashtable<String, Integer> duplicates = new Hashtable<String, Integer>();
 		for(String invKey : inventory.keySet()) {
 			if(!invKey.equals("none") && !invKey.equals("all")) {
 				ArrayList<String> items = inventory.get(invKey);
 				for(String item : items) {
 					if(this.numOfItem(item) > 1) {
-						duplicateItemsCount.put(item, this.numOfItem(item));
+						duplicates.put(item, this.numOfItem(item));
 					}
 				}
 				
-				for(String key : duplicateItemsCount.keySet()) {
-					System.out.println(key + ' ' + duplicateItemsCount.get(key));
-				}
 			}
 		}
-		return duplicateItemsCount;
+		
+		for(String key : duplicates.keySet()) {
+			System.out.println(key + ' ' + duplicates.get(key));
+		}
+		return duplicates;
 	}
 	
 }
