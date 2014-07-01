@@ -112,7 +112,7 @@ public class Inventory {
 		Hashtable<String, Integer> duplicates = new Hashtable<String, Integer>();
 		ArrayList<String> items = inventory.get(itemClass);
 		for(String item : items) {
-			if(this.numOfItem(itemClass, item) > 1) {
+			if(this.numOfItem(itemClass, item) > 1 || item.contains("Vintage")) {
 				duplicates.put(item, this.numOfItem(itemClass, item));
 			}
 		}
@@ -120,6 +120,21 @@ public class Inventory {
 //		for(String key : duplicates.keySet()) {
 //			System.out.println(key + ' ' + duplicates.get(key));
 //		}
+		
+		ArrayList<String> vintagesToRemove = new ArrayList<String>();
+		for(String key : duplicates.keySet()) {
+			if(key.contains("Vintage")) {
+				vintagesToRemove.add(key);
+				key = key.replace("Vintage ", "");
+				if(duplicates.get(key) != null) {
+					duplicates.put(key, duplicates.get(key) + 1);
+				}
+			}
+		}
+		
+		for(String item : vintagesToRemove) {
+			duplicates.remove(item);
+		}
 		
 		return duplicates;
 	}
@@ -130,7 +145,7 @@ public class Inventory {
 			if(!invKey.equals("none") && !invKey.equals("all")) {
 				ArrayList<String> items = inventory.get(invKey);
 				for(String item : items) {
-					if(this.numOfItem(item) > 1) {
+					if(this.numOfItem(item) > 1 || item.contains("Vintage")) {
 						duplicates.put(item, this.numOfItem(item));
 					}
 				}
@@ -141,6 +156,27 @@ public class Inventory {
 		for(String key : duplicates.keySet()) {
 			System.out.println(key + ' ' + duplicates.get(key));
 		}
+
+		ArrayList<String> vintagesToRemove = new ArrayList<String>();
+		for(String key : duplicates.keySet()) {
+			if(key.contains("Vintage")) {
+				vintagesToRemove.add(key);
+				key = key.replace("Vintage ", "");
+				if(duplicates.get(key) != null) {
+					duplicates.put(key, duplicates.get(key) + 1);
+				}
+			}
+		}
+		
+		for(String item : vintagesToRemove) {
+			duplicates.remove(item);
+		}
+		
+		for(String key : duplicates.keySet()) {
+			System.out.println(key + ' ' + duplicates.get(key));
+		}
+		
+		
 		return duplicates;
 	}
 	
