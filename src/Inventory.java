@@ -10,9 +10,15 @@ import java.util.Set;
 public class Inventory {
 
 	private Hashtable<String, ArrayList<String>> inventory = new Hashtable<String, ArrayList<String>>();
+	private Hashtable<String, Integer> duplicates = new Hashtable<String, Integer>();
 	
 	public Inventory(Hashtable<String, ArrayList<String>> inventory) {
 		this.inventory = inventory;
+	}
+	
+	public void getScrap(String character) {
+		createScrapFromSameItem(character);
+		createScrapFromSameClass(character);
 	}
 	
 	public int numOfItem(String item) {
@@ -31,11 +37,11 @@ public class Inventory {
 	}
 	
 	public Hashtable<String, Integer> createScrapFromSameItem(String itemClass) {
-		Hashtable<String, Integer> duplicates = getDuplicatesHash(itemClass);
+		duplicates = getDuplicatesHash(itemClass);
 		for(String key : duplicates.keySet()) {
 			if(duplicates.get(key) >= 3) {
 				duplicates.put(key, duplicates.get(key) - 2);
-				System.out.println("Create scrap from " + key);
+				System.out.println("Create scrap from 2x" + key);
 			}
 		}
 		return duplicates;
@@ -46,14 +52,14 @@ public class Inventory {
 		for(String key : duplicates.keySet()) {
 			if(duplicates.get(key) >= 3) {
 				duplicates.put(key, duplicates.get(key) - 2);
-				System.out.println("Create scrap from " + key);
+				System.out.println("Create scrap from 2x" + key);
 			}
 		}
 		
 		return duplicates;
 	}
 	
-	public Hashtable<String, Integer> createScrapFromSameClass(String itemClass, Hashtable<String, Integer> duplicates) {
+	public Hashtable<String, Integer> createScrapFromSameClass(String itemClass) {
 		Hashtable<String, String> scrapable = new Hashtable<String, String>();
 		int i = 0;
 		String ingredient1 = "";
@@ -73,7 +79,7 @@ public class Inventory {
 		}
 		
 		for(String key : scrapable.keySet()) {
-			System.out.println(key + " and " + scrapable.get(key));
+			System.out.println("Create scrap from " + key + " and " + scrapable.get(key));
 		}
 		
 		return duplicates;
@@ -102,7 +108,7 @@ public class Inventory {
 		}
 		
 		for(String key : scrapable.keySet()) {
-			System.out.println(key + " and " + scrapable.get(key));
+			System.out.println("Create scrap from " + key + " and " + scrapable.get(key));
 		}
 		
 		return scrapable;
@@ -176,11 +182,6 @@ public class Inventory {
 			System.out.println(key + ' ' + duplicates.get(key));
 		}
 		
-		
-		return duplicates;
-	}
-	
-	private Hashtable<String, Integer> removeSingleOccurenceOfItem(Hashtable<String, Integer> duplicates) {
 		
 		return duplicates;
 	}
